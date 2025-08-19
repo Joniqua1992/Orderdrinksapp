@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drink Orders</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f0f0f0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: #f8f8f8;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: white;
+            border-bottom: 3px solid #4CAF50;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .tab:hover {
+            background: #e8e8e8;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            min-height: calc(100vh - 160px);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .drinks-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .drink-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .drink-item:hover {
+            background: #f0f8ff;
+            border-color: #4CAF50;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .drink-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .drink-icon {
+            font-size: 24px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .drink-details h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .drink-details p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .drink-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .add-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .add-btn:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+
+        .current-order {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border: 2px solid #4CAF50;
+        }
+
+        .current-order h3 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qty-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn.plus {
+            background: #4CAF50;
+        }
+
+        .total {
+            background: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 15px;
+            border-radius: 10px;
+        }
+
+        .done-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .done-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .done-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .orders-history {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #4CAF50;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .order-number {
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 18px;
+        }
+
+        .order-time {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .order-items {
+            margin-bottom: 10px;
+        }
+
+        .order-total {
+            text-align: right;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #666;
+            padding: 40px 20px;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .add-drink-form {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .add-drink-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-drink-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .drinks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .manage-drink-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .delete-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: #ff3838;
+        }
+
+        .drink-manage-info {
+            flex: 1;
+        }
+
+        .drink-manage-info h4 {
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+
+        .drink-manage-info p {
+            margin: 0;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🥤 Drink Orders</h1>
+            <p>Tap to order your favorite drinks</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('order')">Order</button>
+            <button class="tab" onclick="switchTab('manage')">Add Drinks</button>
+            <button class="tab" onclick="switchTab('history')">History</button>
+        </div>
+
+        <div id="order-tab" class="tab-content active">
+            <div class="drinks-grid" id="drinks-grid">
+                <!-- Drinks will be populated here -->
+            </div>
+
+            <div class="current-order" id="current-order" style="display: none;">
+                <h3>Current Order</h3>
+                <div id="order-items"></div>
+                <div class="total" id="total">Total: €0.00</div>
+                <button class="done-btn" onclick="completeOrder()">Order Complete ✅</button>
+            </div>
+        </div>
+
+        <div id="manage-tab" class="tab-content">
+            <div class="add-drink-form">
+                <h3 style="margin-bottom: 20px; color: #4CAF50;">Add New Drink</h3>
+                
+                <div class="form-group">
+                    <label for="drink-name">Drink Name</label>
+                    <input type="text" id="drink-name" placeholder="e.g., Sprite" maxlength="30">
+                </div>
+                
+                <div class="form-group">
+                    <label for="drink-description">Description (optional)</label>
+                    <input type="text" id="drink-description" placeholder="e.g., Lemon-lime soda" maxlength="50">
+                </div>
+                
+                <div class="form-group">
+                    <label for="drink-price">Price (€)</label>
+                    <input type="number" id="drink-price" placeholder="0.00" min="0" step="0.01" max="999.99">
+                </div>
+                
+                <div class="form-group">
+                    <label for="drink-emoji">Emoji (optional)</label>
+                    <input type="text" id="drink-emoji" placeholder="🥤" maxlength="2">
+                </div>
+                
+                <button class="add-drink-btn" onclick="addNewDrink()">Add Drink</button>
+                
+                <div id="add-drink-message" class="message" style="display: none;"></div>
+            </div>
+            
+            <div class="manage-drinks">
+                <h3 style="margin: 30px 0 20px 0; color: #4CAF50;">Manage Drinks</h3>
+                <div id="manage-drinks-list" class="drinks-list">
+                    <!-- Manage drinks will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <div id="history-tab" class="tab-content">
+            <div id="orders-history" class="orders-history">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📋</div>
+                    <h3>No orders yet</h3>
+                    <p>Completed orders will appear here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentOrder = {};
+        let orderHistory = [];
+        let orderCounter = 1;
+        let drinks = [];
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDrinksGrid();
+            updateManageDrinksList();
+        });
+
+        function updateDrinksGrid() {
+            const grid = document.getElementById('drinks-grid');
+            let gridHTML = '';
+            
+            if (drinks.length === 0) {
+                gridHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🍹</div>
+                        <h3>No drinks available</h3>
+                        <p>Go to "Add Drinks" tab to add your first drink</p>
+                    </div>
+                `;
+            } else {
+                drinks.forEach(drink => {
+                    gridHTML += `
+                        <div class="drink-item" onclick="addDrink('${drink.name}', ${drink.price})">
+                            <div class="drink-info">
+                                <div class="drink-icon">${drink.emoji}</div>
+                                <div class="drink-details">
+                                    <h3>${drink.name}</h3>
+                                    <p>${drink.description}</p>
+                                </div>
+                            </div>
+                            <div class="drink-price">€${drink.price.toFixed(2)}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            grid.innerHTML = gridHTML;
+        }
+
+        function updateManageDrinksList() {
+            const list = document.getElementById('manage-drinks-list');
+            let listHTML = '';
+            
+            if (drinks.length === 0) {
+                listHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🍹</div>
+                        <h3>No drinks available</h3>
+                        <p>Add your first drink above</p>
+                    </div>
+                `;
+            } else {
+                drinks.forEach((drink, index) => {
+                    listHTML += `
+                        <div class="manage-drink-item">
+                            <div class="drink-info">
+                                <div class="drink-icon">${drink.emoji}</div>
+                            </div>
+                            <div class="drink-manage-info">
+                                <h4>${drink.name}</h4>
+                                <p>${drink.description} - €${drink.price.toFixed(2)}</p>
+                            </div>
+                            <button class="delete-btn" onclick="deleteDrink(${index})">Delete</button>
+                        </div>
+                    `;
+                });
+            }
+            
+            list.innerHTML = listHTML;
+        }
+
+        function addNewDrink() {
+            const name = document.getElementById('drink-name').value.trim();
+            const description = document.getElementById('drink-description').value.trim() || 'Delicious beverage';
+            const price = parseFloat(document.getElementById('drink-price').value);
+            const emoji = document.getElementById('drink-emoji').value.trim() || '🥤';
+            const messageDiv = document.getElementById('add-drink-message');
+            
+            // Validation
+            if (!name) {
+                showMessage('Please enter a drink name', 'error');
+                return;
+            }
+            
+            if (isNaN(price) || price <= 0) {
+                showMessage('Please enter a valid price', 'error');
+                return;
+            }
+            
+            if (price > 999.99) {
+                showMessage('Price cannot exceed €999.99', 'error');
+                return;
+            }
+            
+            // Check if drink already exists
+            if (drinks.some(drink => drink.name.toLowerCase() === name.toLowerCase())) {
+                showMessage('A drink with this name already exists', 'error');
+                return;
+            }
+            
+            // Add the drink
+            drinks.push({ name, description, price, emoji });
+            
+            // Clear form
+            document.getElementById('drink-name').value = '';
+            document.getElementById('drink-description').value = '';
+            document.getElementById('drink-price').value = '';
+            document.getElementById('drink-emoji').value = '';
+            
+            // Update displays
+            updateDrinksGrid();
+            updateManageDrinksList();
+            
+            showMessage(`${name} added successfully!`, 'success');
+        }
+
+        function deleteDrink(index) {
+            const drinkName = drinks[index].name;
+            
+            if (confirm(`Are you sure you want to delete "${drinkName}"?`)) {
+                drinks.splice(index, 1);
+                updateDrinksGrid();
+                updateManageDrinksList();
+                showMessage(`${drinkName} deleted successfully!`, 'success');
+            }
+        }
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('add-drink-message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        function switchTab(tabName) {
+            // Remove active class from all tabs and content
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked tab and corresponding content
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+
+        function addDrink(name, price) {
+            if (currentOrder[name]) {
+                currentOrder[name].quantity += 1;
+            } else {
+                currentOrder[name] = {
+                    price: price,
+                    quantity: 1
+                };
+            }
+            updateCurrentOrder();
+        }
+
+        function updateQuantity(name, change) {
+            if (currentOrder[name]) {
+                currentOrder[name].quantity += change;
+                if (currentOrder[name].quantity <= 0) {
+                    delete currentOrder[name];
+                }
+            }
+            updateCurrentOrder();
+        }
+
+        function updateCurrentOrder() {
+            const orderDiv = document.getElementById('current-order');
+            const itemsDiv = document.getElementById('order-items');
+            const totalDiv = document.getElementById('total');
+            
+            const items = Object.keys(currentOrder);
+            
+            if (items.length === 0) {
+                orderDiv.style.display = 'none';
+                return;
+            }
+            
+            orderDiv.style.display = 'block';
+            
+            let itemsHTML = '';
+            let total = 0;
+            
+            items.forEach(item => {
+                const itemData = currentOrder[item];
+                const itemTotal = itemData.price * itemData.quantity;
+                total += itemTotal;
+                
+                itemsHTML += `
+                    <div class="order-item">
+                        <div>
+                            <strong>${item}</strong><br>
+                            <small>€${itemData.price.toFixed(2)} each</small>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="updateQuantity('${item}', -1)">-</button>
+                            <span style="margin: 0 10px; font-weight: bold;">${itemData.quantity}</span>
+                            <button class="qty-btn plus" onclick="updateQuantity('${item}', 1)">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            itemsDiv.innerHTML = itemsHTML;
+            totalDiv.innerHTML = `Total: €${total.toFixed(2)}`;
+        }
+
+        function completeOrder() {
+            if (Object.keys(currentOrder).length === 0) return;
+            
+            const orderTotal = Object.keys(currentOrder).reduce((total, item) => {
+                return total + (currentOrder[item].price * currentOrder[item].quantity);
+            }, 0);
+            
+            const order = {
+                id: orderCounter++,
+                items: {...currentOrder},
+                total: orderTotal,
+                timestamp: new Date()
+            };
+            
+            orderHistory.unshift(order);
+            currentOrder = {};
+            updateCurrentOrder();
+            updateOrderHistory();
+            
+            // Show success feedback
+            const doneBtn = document.querySelector('.done-btn');
+            const originalText = doneBtn.innerHTML;
+            doneBtn.innerHTML = 'Order Delivered! 🎉';
+            doneBtn.style.background = '#4CAF50';
+            
+            setTimeout(() => {
+                doneBtn.innerHTML = originalText;
+                doneBtn.style.background = 'linear-gradient(135deg, #FF6B6B, #FF8E53)';
+            }, 2000);
+        }
+
+        function updateOrderHistory() {
+            const historyDiv = document.getElementById('orders-history');
+            
+            if (orderHistory.length === 0) {
+                historyDiv.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <h3>No orders yet</h3>
+                        <p>Completed orders will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let historyHTML = '';
+            
+            orderHistory.forEach(order => {
+                const timeString = order.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const dateString = order.timestamp.toLocaleDateString();
+                
+                let itemsHTML = '';
+                Object.keys(order.items).forEach(item => {
+                    const itemData = order.items[item];
+                    itemsHTML += `<div>${item} x${itemData.quantity} - €${(itemData.price * itemData.quantity).toFixed(2)}</div>`;
+                });
+                
+                historyHTML += `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="order-number">Order #${order.id}</div>
+                            <div class="order-time">${timeString} - ${dateString}</div>
+                        </div>
+                        <div class="order-items">
+                            ${itemsHTML}
+                        </div>
+                        <div class="order-total">Total: €${order.total.toFixed(2)}</div>
+                    </div>
+                `;
+            });
+            
+            historyDiv.innerHTML = historyHTML;
+        }
+    </script>
+</body>
+</html>
