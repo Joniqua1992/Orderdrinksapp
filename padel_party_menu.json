@@ -1,0 +1,189 @@
+{
+  "version": 1,
+  "createdAt": "2025-08-22T14:44:00.000Z",
+  "lang": "nl",
+  "drinks": [
+    {
+      "name": "Cava (glas)",
+      "description": "",
+      "price": 5.0,
+      "emoji": "🍾"
+    },
+    {
+      "name": "Cava (fles)",
+      "description": "",
+      "price": 20.0,
+      "emoji": "🍾"
+    },
+    {
+      "name": "Witte Wijn (glas)",
+      "description": "",
+      "price": 3.75,
+      "emoji": "🍷"
+    },
+    {
+      "name": "Witte Wijn (fles)",
+      "description": "",
+      "price": 20.0,
+      "emoji": "🍷"
+    },
+    {
+      "name": "Rosé Wijn (glas)",
+      "description": "",
+      "price": 3.75,
+      "emoji": "🍷"
+    },
+    {
+      "name": "Rosé Wijn (fles)",
+      "description": "",
+      "price": 20.0,
+      "emoji": "🍷"
+    },
+    {
+      "name": "Aperol (glas) - 'van 't Vat'",
+      "description": "",
+      "price": 6.25,
+      "emoji": "🍹"
+    },
+    {
+      "name": "Virgin Aperol (glas) - 'van 't Vat'",
+      "description": "",
+      "price": 6.25,
+      "emoji": "🥤"
+    },
+    {
+      "name": "Pils (25cl)",
+      "description": "",
+      "price": 2.5,
+      "emoji": "🍺"
+    },
+    {
+      "name": "Omer",
+      "description": "",
+      "price": 3.75,
+      "emoji": "🍺"
+    },
+    {
+      "name": "Duvel",
+      "description": "",
+      "price": 3.75,
+      "emoji": "🍺"
+    },
+    {
+      "name": "Cristal 0.0%",
+      "description": "",
+      "price": 2.5,
+      "emoji": "🍺"
+    },
+    {
+      "name": "Desperados 0.0%",
+      "description": "",
+      "price": 3.75,
+      "emoji": "🍺"
+    },
+    {
+      "name": "Cola",
+      "description": "",
+      "price": 2.5,
+      "emoji": "🥤"
+    },
+    {
+      "name": "Cola Zero",
+      "description": "",
+      "price": 2.5,
+      "emoji": "🥤"
+    },
+    {
+      "name": "Tönnisteiner Citroen",
+      "description": "",
+      "price": 2.5,
+      "emoji": "🥤"
+    },
+    {
+      "name": "Tönnisteiner Orange",
+      "description": "",
+      "price": 2.5,
+      "emoji": "🥤"
+    },
+    {
+      "name": "Plat Water",
+      "description": "",
+      "price": 2.5,
+      "emoji": "💧"
+    },
+    {
+      "name": "Spuit Water",
+      "description": "",
+      "price": 2.5,
+      "emoji": "💧"
+    },
+    {
+      "name": "Aquarius",
+      "description": "",
+      "price": 2.5,
+      "emoji": "🥤"
+    },
+    {
+      "name": "Tonic",
+      "description": "",
+      "price": 2.5,
+      "emoji": "🥤"
+    },
+    {
+      "name": "Padelbal (Pompelmoes)",
+      "description": "",
+      "price": 3.75,
+      "emoji": "🍊"
+    },
+    {
+      "name": "Skibal (Appelsiensap)",
+      "description": "",
+      "price": 3.75,
+      "emoji": "🍊"
+    },
+    {
+      "name": "Flügel (2 cl)",
+      "description": "",
+      "price": 2.5,
+      "emoji": "🥃"
+    },
+    {
+      "name": "Jägermeister (2 cl)",
+      "description": "",
+      "price": 3.75,
+      "emoji": "🥃"
+    }
+  ],
+  "foods": [
+    {
+      "name": "Chips (paprika, pickels, pepper & salt)",
+      "description": "",
+      "price": 2.5,
+      "emoji": "🍟"
+    },
+    {
+      "name": "Portie Mini-Frikandel",
+      "description": "",
+      "price": 5.0,
+      "emoji": "🥓"
+    },
+    {
+      "name": "Portie Partymix",
+      "description": "",
+      "price": 5.0,
+      "emoji": "🍴"
+    },
+    {
+      "name": "Luxe Hamburger",
+      "description": "Huisgemaakte hamburger van rund WIT-BLAUW met ijsbergsalade, tomaat en ui",
+      "price": 10.0,
+      "emoji": "🍔"
+    },
+    {
+      "name": "Frietjes met snacks",
+      "description": "Keuze uit frikandel, frikandel special, saté, mexicano, kipkorn, kaaskroket of boulet",
+      "price": 10.0,
+      "emoji": "🍟"
+    }
+  ]
+}

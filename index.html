@@ -4,475 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drink Orders</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            background: white;
-            min-height: 100vh;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-
-        .header {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .tabs {
-            display: flex;
-            background: #f0f0f0;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .tab {
-            flex: 1;
-            padding: 15px;
-            text-align: center;
-            background: #f8f8f8;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .tab.active {
-            background: white;
-            border-bottom: 3px solid #4CAF50;
-            color: #4CAF50;
-            font-weight: bold;
-        }
-
-        .tab:hover {
-            background: #e8e8e8;
-        }
-
-        .tab-content {
-            display: none;
-            padding: 20px;
-            min-height: calc(100vh - 160px);
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .lang-switch {
-            margin-top: 10px;
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            flex-wrap: nowrap;
-        }
-
-        .lang-btn {
-            background: #ffffff22;
-            color: #fff;
-            border: 1px solid rgba(255,255,255,0.5);
-            padding: 6px 10px;
-            border-radius: 999px;
-            cursor: pointer;
-            font-size: 12px;
-            backdrop-filter: blur(2px);
-            transition: all 0.2s ease;
-        }
-
-        .lang-btn:hover {
-            background: #ffffff33;
-            transform: translateY(-1px);
-        }
-
-        .lang-btn.active {
-            background: #4CAF50;
-            border-color: #4CAF50;
-        }
-
-        .drinks-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .drink-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 10px;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .drink-item:hover {
-            background: #f0f8ff;
-            border-color: #4CAF50;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .drink-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .drink-icon {
-            font-size: 24px;
-            width: 40px;
-            text-align: center;
-        }
-
-        .drink-details h3 {
-            font-size: 18px;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        .drink-details p {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .drink-price {
-            font-size: 20px;
-            font-weight: bold;
-            color: #4CAF50;
-        }
-
-        .add-btn {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .add-btn:hover {
-            background: #45a049;
-            transform: scale(1.05);
-        }
-
-        .current-order {
-            background: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border: 2px solid #4CAF50;
-        }
-
-        .current-order h3 {
-            color: #4CAF50;
-            margin-bottom: 15px;
-            font-size: 18px;
-        }
-
-        .order-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .order-item:last-child {
-            border-bottom: none;
-        }
-
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .qty-btn {
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .qty-btn.plus {
-            background: #4CAF50;
-        }
-
-        .total {
-            background: #333;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 15px;
-            border-radius: 10px;
-        }
-
-        .done-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
-            color: white;
-            border: none;
-            padding: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .done-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
-        }
-
-        .done-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .orders-history {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .order-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-left: 4px solid #4CAF50;
-        }
-
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .order-number {
-            font-weight: bold;
-            color: #4CAF50;
-            font-size: 18px;
-        }
-
-        .order-time {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .order-items {
-            margin-bottom: 10px;
-        }
-
-        .order-total {
-            text-align: right;
-            font-weight: bold;
-            font-size: 18px;
-            color: #333;
-            border-top: 1px solid #eee;
-            padding-top: 10px;
-        }
-
-        .empty-state {
-            text-align: center;
-            color: #666;
-            padding: 40px 20px;
-        }
-
-        .empty-state-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-
-        .add-drink-form {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #333;
-            font-size: 14px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s ease;
-            box-sizing: border-box;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #4CAF50;
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
-        }
-
-        .add-drink-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            border: none;
-            padding: 15px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .add-drink-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
-        }
-
-        .clear-btn {
-            width: 100%;
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 12px;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
-            margin: 10px 0 0 0;
-        }
-
-        .clear-btn:hover {
-            background: #5a6268;
-            transform: translateY(-1px);
-        }
-
-        .clear-btn:disabled {
-            background: #bbb;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .message {
-            padding: 12px;
-            border-radius: 6px;
-            margin-top: 15px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .drinks-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .manage-drink-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .delete-btn {
-            background: #ff4757;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: background 0.3s ease;
-        }
-
-        .delete-btn:hover {
-            background: #ff3838;
-        }
-
-        .drink-manage-info {
-            flex: 1;
-        }
-
-        .drink-manage-info h4 {
-            margin: 0 0 5px 0;
-            color: #333;
-        }
-
-        .drink-manage-info p {
-            margin: 0;
-            color: #666;
-            font-size: 12px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css?v=1.5">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1 id="header-title">🥤 Drink Orders</h1>
+            <h1 id="header-title">🍽️ Food & Drink Orders</h1>
             <p id="header-subtitle">Tap to order your favorite drinks</p>
             <div class="lang-switch">
                 <button id="btn-lang-en" class="lang-btn" onclick="setLanguage('en')">EN</button>
@@ -483,19 +20,31 @@
 
         <div class="tabs">
             <button id="tab-order-btn" class="tab active" onclick="switchTab('order')">Order</button>
-            <button id="tab-manage-btn" class="tab" onclick="switchTab('manage')">Add Drinks</button>
+            <button id="tab-manage-btn" class="tab" onclick="switchTab('manage')">Add Drinks and Food</button>
             <button id="tab-history-btn" class="tab" onclick="switchTab('history')">History</button>
         </div>
 
         <div id="order-tab" class="tab-content active">
+            <div class="subtabs">
+                <button id="subtab-drinks-btn" class="subtab active" onclick="switchSubtab('drinks')">Drinks</button>
+                <button id="subtab-foods-btn" class="subtab" onclick="switchSubtab('foods')">Food</button>
+            </div>
+
             <div class="drinks-grid" id="drinks-grid">
                 <!-- Drinks will be populated here -->
+            </div>
+            <div class="drinks-grid" id="foods-grid" style="display: none;">
+                <!-- Foods will be populated here -->
             </div>
 
             <div class="current-order" id="current-order" style="display: none;">
                 <h3 id="current-order-title">Current Order</h3>
                 <div id="order-items"></div>
                 <div class="total" id="total">Total: €0.00</div>
+                <div class="table-input-section">
+                    <label for="table-number" id="table-number-label">Table Number (optional):</label>
+                    <input type="number" id="table-number" placeholder="e.g., 5" min="1" max="999">
+                </div>
                 <button id="done-btn" class="done-btn" onclick="completeOrder()">Order Complete ✅</button>
             </div>
         </div>
@@ -510,18 +59,13 @@
                 </div>
                 
                 <div class="form-group">
-                    <label id="label-drink-description" for="drink-description">Description (optional)</label>
-                    <input type="text" id="drink-description" placeholder="e.g., Lemon-lime soda" maxlength="50">
-                </div>
-                
-                <div class="form-group">
                     <label id="label-drink-price" for="drink-price">Price (€)</label>
                     <input type="number" id="drink-price" placeholder="0.00" min="0" step="0.01" max="999.99">
                 </div>
                 
                 <div class="form-group">
                     <label id="label-drink-emoji" for="drink-emoji">Emoji (optional)</label>
-                    <input type="text" id="drink-emoji" placeholder="🥤" maxlength="2">
+                    <input type="text" id="drink-emoji" placeholder="🥤" maxlength="8">
                 </div>
                 
                 <button id="add-drink-btn" class="add-drink-btn" onclick="addNewDrink()">Add Drink</button>
@@ -534,6 +78,47 @@
                 <button id="clear-drinks-btn" class="clear-btn" onclick="clearAllDrinks()">Clear Saved Drinks</button>
                 <div id="manage-drinks-list" class="drinks-list">
                     <!-- Manage drinks will be populated here -->
+                </div>
+            </div>
+
+            <div class="add-drink-form" style="margin-top: 30px;">
+                <h3 id="add-food-heading" style="margin-bottom: 20px; color: #4CAF50;">Add New Food</h3>
+                
+                <div class="form-group">
+                    <label id="label-food-name" for="food-name">Food Name</label>
+                    <input type="text" id="food-name" placeholder="e.g., Burger" maxlength="30">
+                </div>
+                
+                <div class="form-group">
+                    <label id="label-food-price" for="food-price">Price (€)</label>
+                    <input type="number" id="food-price" placeholder="0.00" min="0" step="0.01" max="999.99">
+                </div>
+                
+                <div class="form-group">
+                    <label id="label-food-emoji" for="food-emoji">Emoji (optional)</label>
+                    <input type="text" id="food-emoji" placeholder="🍔" maxlength="8">
+                </div>
+                
+                <button id="add-food-btn" class="add-drink-btn" onclick="addNewFood()">Add Food</button>
+                
+                <div id="add-food-message" class="message" style="display: none;"></div>
+            </div>
+
+            <div class="manage-drinks" style="margin-bottom: 20px;">
+                <h3 id="manage-foods-heading" style="margin: 30px 0 20px 0; color: #4CAF50;">Manage Food</h3>
+                <button id="clear-foods-btn" class="clear-btn" onclick="clearAllFoods()">Clear Saved Food</button>
+                <div id="manage-foods-list" class="drinks-list">
+                    <!-- Manage foods will be populated here -->
+                </div>
+            </div>
+
+            <div class="manage-drinks" style="margin-bottom: 20px;">
+                <h3 id="menu-io-heading" style="margin: 30px 0 10px 0; color: #4CAF50;">Share Menu</h3>
+                <div style="display:flex; gap: 10px; flex-wrap: wrap;">
+                    <button id="export-menu-btn" class="clear-btn" onclick="exportMenu()">Export Menu</button>
+                    <button id="import-menu-btn" class="clear-btn" onclick="document.getElementById('import-menu-input').click()">Import Menu</button>
+                    <button id="load-defaults-btn" class="clear-btn" onclick="loadDefaults()">Load Defaults</button>
+                    <input id="import-menu-input" type="file" accept="application/json" style="display:none" onchange="importMenuFromFile(event)">
                 </div>
             </div>
         </div>
@@ -549,550 +134,9 @@
         </div>
     </div>
 
-    <script>
-        let currentOrder = {};
-        let orderHistory = [];
-        let orderCounter = 1;
-        let drinks = [];
-        const DRINKS_STORAGE_KEY = 'drinkOrderingApp.drinks';
-        const LANG_STORAGE_KEY = 'drinkOrderingApp.lang';
-        let currentLang = 'en';
+    <script src="translations.js"></script>
+    <script src="app.js"></script>
 
-        const translations = {
-            en: {
-                title: 'Drink Orders',
-                subtitle: 'Tap to order your favorite drinks',
-                tabOrder: 'Order',
-                tabManage: 'Add Drinks',
-                tabHistory: 'History',
-                addNewDrink: 'Add New Drink',
-                drinkName: 'Drink Name',
-                drinkNamePlaceholder: 'e.g., Sprite',
-                drinkDescription: 'Description (optional)',
-                drinkDescriptionPlaceholder: 'e.g., Lemon-lime soda',
-                drinkPrice: 'Price (€)',
-                drinkEmoji: 'Emoji (optional)',
-                addDrinkBtn: 'Add Drink',
-                manageDrinks: 'Manage Drinks',
-                delete: 'Delete',
-                clearDrinks: 'Clear Saved Drinks',
-                emptyNoDrinks: 'No drinks available',
-                emptyGoAdd: 'Go to "Add Drinks" tab to add your first drink',
-                emptyManageAdd: 'Add your first drink above',
-                currentOrder: 'Current Order',
-                orderCompleteBtn: 'Order Complete',
-                orderDelivered: 'Order Delivered!',
-                each: 'each',
-                confirmDelete: 'Are you sure you want to delete "{name}"?',
-                confirmClearAll: 'Are you sure you want to clear all saved drinks?',
-                clearedAllSuccess: 'All drinks cleared successfully!',
-                addSuccess: '{name} added successfully!',
-                deleteSuccess: '{name} deleted successfully!',
-                pleaseEnterName: 'Please enter a drink name',
-                pleaseEnterValidPrice: 'Please enter a valid price',
-                priceTooHigh: 'Price cannot exceed €999.99',
-                duplicateDrink: 'A drink with this name already exists',
-                historyEmptyTitle: 'No orders yet',
-                historyEmptyDesc: 'Completed orders will appear here',
-                orderLabel: 'Order',
-                totalLabel: 'Total'
-            },
-            nl: {
-                title: 'Drankbestellingen',
-                subtitle: 'Tik om je favoriete drankjes te bestellen',
-                tabOrder: 'Bestellen',
-                tabManage: 'Drankjes toevoegen',
-                tabHistory: 'Geschiedenis',
-                addNewDrink: 'Nieuw drankje toevoegen',
-                drinkName: 'Naam van drankje',
-                drinkNamePlaceholder: 'bijv. Sprite',
-                drinkDescription: 'Beschrijving (optioneel)',
-                drinkDescriptionPlaceholder: 'bijv. Citroen-limoen frisdrank',
-                drinkPrice: 'Prijs (€)',
-                drinkEmoji: 'Emoji (optioneel)',
-                addDrinkBtn: 'Drankje toevoegen',
-                manageDrinks: 'Drankjes beheren',
-                delete: 'Verwijderen',
-                clearDrinks: 'Opgeslagen drankjes wissen',
-                emptyNoDrinks: 'Geen drankjes beschikbaar',
-                emptyGoAdd: 'Ga naar het tabblad "Drankjes toevoegen" om je eerste drankje toe te voegen',
-                emptyManageAdd: 'Voeg hierboven je eerste drankje toe',
-                currentOrder: 'Huidige bestelling',
-                orderCompleteBtn: 'Bestelling afgerond',
-                orderDelivered: 'Bestelling bezorgd!',
-                each: 'per stuk',
-                confirmDelete: 'Weet je zeker dat je "{name}" wilt verwijderen?',
-                confirmClearAll: 'Weet je zeker dat je alle opgeslagen drankjes wilt wissen?',
-                clearedAllSuccess: 'Alle drankjes succesvol gewist!',
-                addSuccess: '"{name}" succesvol toegevoegd!',
-                deleteSuccess: '"{name}" succesvol verwijderd!',
-                pleaseEnterName: 'Voer een dranknaam in',
-                pleaseEnterValidPrice: 'Voer een geldige prijs in',
-                priceTooHigh: 'Prijs mag niet hoger zijn dan €999,99',
-                duplicateDrink: 'Er bestaat al een drankje met deze naam',
-                historyEmptyTitle: 'Nog geen bestellingen',
-                historyEmptyDesc: 'Voltooide bestellingen verschijnen hier',
-                orderLabel: 'Bestelling',
-                totalLabel: 'Totaal'
-            },
-            fr: {
-                title: 'Commandes de boissons',
-                subtitle: 'Appuyez pour commander vos boissons préférées',
-                tabOrder: 'Commander',
-                tabManage: 'Ajouter des boissons',
-                tabHistory: 'Historique',
-                addNewDrink: 'Ajouter une nouvelle boisson',
-                drinkName: 'Nom de la boisson',
-                drinkNamePlaceholder: 'ex. Sprite',
-                drinkDescription: 'Description (optionnel)',
-                drinkDescriptionPlaceholder: 'ex. Soda citron-limette',
-                drinkPrice: 'Prix (€)',
-                drinkEmoji: 'Emoji (optionnel)',
-                addDrinkBtn: 'Ajouter la boisson',
-                manageDrinks: 'Gérer les boissons',
-                delete: 'Supprimer',
-                clearDrinks: 'Effacer les boissons enregistrées',
-                emptyNoDrinks: 'Aucune boisson disponible',
-                emptyGoAdd: 'Allez à l’onglet "Ajouter des boissons" pour ajouter votre première boisson',
-                emptyManageAdd: 'Ajoutez votre première boisson ci-dessus',
-                currentOrder: 'Commande en cours',
-                orderCompleteBtn: 'Commande terminée',
-                orderDelivered: 'Commande livrée !',
-                each: 'chacune',
-                confirmDelete: 'Voulez-vous vraiment supprimer « {name} » ?',
-                confirmClearAll: 'Voulez-vous vraiment effacer toutes les boissons enregistrées ?',
-                clearedAllSuccess: 'Toutes les boissons ont été effacées avec succès !',
-                addSuccess: '"{name}" a été ajoutée avec succès !',
-                deleteSuccess: '"{name}" a été supprimée avec succès !',
-                pleaseEnterName: 'Veuillez saisir un nom de boisson',
-                pleaseEnterValidPrice: 'Veuillez saisir un prix valide',
-                priceTooHigh: 'Le prix ne peut pas dépasser 999,99 €',
-                duplicateDrink: 'Une boisson avec ce nom existe déjà',
-                historyEmptyTitle: 'Aucune commande pour l’instant',
-                historyEmptyDesc: 'Les commandes terminées apparaîtront ici',
-                orderLabel: 'Commande',
-                totalLabel: 'Total'
-            }
-        };
-
-        function t(key) {
-            const dict = translations[currentLang] || translations.en;
-            return dict[key] || translations.en[key] || key;
-        }
-
-        function setLanguage(lang) {
-            if (!translations[lang]) return;
-            currentLang = lang;
-            try { localStorage.setItem(LANG_STORAGE_KEY, lang); } catch {}
-            setStaticText();
-            updateCurrentOrder();
-            updateDrinksGrid();
-            updateManageDrinksList();
-            updateOrderHistory();
-            updateLanguageButtonsActive();
-        }
-
-        function loadLanguageFromStorage() {
-            try {
-                const saved = localStorage.getItem(LANG_STORAGE_KEY);
-                if (saved && translations[saved]) {
-                    currentLang = saved;
-                }
-            } catch {}
-        }
-
-        function updateLanguageButtonsActive() {
-            ['en','nl','fr'].forEach(code => {
-                const btn = document.getElementById('btn-lang-' + code);
-                if (btn) {
-                    if (code === currentLang) btn.classList.add('active');
-                    else btn.classList.remove('active');
-                }
-            });
-        }
-
-        function setStaticText() {
-            const titleEl = document.getElementById('header-title');
-            if (titleEl) titleEl.textContent = '🥤 ' + t('title');
-            const subEl = document.getElementById('header-subtitle');
-            if (subEl) subEl.textContent = t('subtitle');
-            const tabOrderBtn = document.getElementById('tab-order-btn');
-            if (tabOrderBtn) tabOrderBtn.textContent = t('tabOrder');
-            const tabManageBtn = document.getElementById('tab-manage-btn');
-            if (tabManageBtn) tabManageBtn.textContent = t('tabManage');
-            const tabHistoryBtn = document.getElementById('tab-history-btn');
-            if (tabHistoryBtn) tabHistoryBtn.textContent = t('tabHistory');
-            const addHeading = document.getElementById('add-drink-heading');
-            if (addHeading) addHeading.textContent = t('addNewDrink');
-            const labelName = document.getElementById('label-drink-name');
-            if (labelName) labelName.textContent = t('drinkName');
-            const inputName = document.getElementById('drink-name');
-            if (inputName) inputName.placeholder = t('drinkNamePlaceholder');
-            const labelDesc = document.getElementById('label-drink-description');
-            if (labelDesc) labelDesc.textContent = t('drinkDescription');
-            const inputDesc = document.getElementById('drink-description');
-            if (inputDesc) inputDesc.placeholder = t('drinkDescriptionPlaceholder');
-            const labelPrice = document.getElementById('label-drink-price');
-            if (labelPrice) labelPrice.textContent = t('drinkPrice');
-            const labelEmoji = document.getElementById('label-drink-emoji');
-            if (labelEmoji) labelEmoji.textContent = t('drinkEmoji');
-            const addBtn = document.getElementById('add-drink-btn');
-            if (addBtn) addBtn.textContent = t('addDrinkBtn');
-            const manageHeading = document.getElementById('manage-drinks-heading');
-            if (manageHeading) manageHeading.textContent = t('manageDrinks');
-            const clearBtn = document.getElementById('clear-drinks-btn');
-            if (clearBtn) clearBtn.textContent = t('clearDrinks');
-            const currentOrderTitle = document.getElementById('current-order-title');
-            if (currentOrderTitle) currentOrderTitle.textContent = t('currentOrder');
-            const doneBtn = document.getElementById('done-btn');
-            if (doneBtn) doneBtn.textContent = t('orderCompleteBtn') + ' ✅';
-            const totalDiv = document.getElementById('total');
-            if (totalDiv) {
-                const items = Object.keys(currentOrder);
-                const total = items.reduce((sum, item) => sum + (currentOrder[item].price * currentOrder[item].quantity), 0);
-                totalDiv.textContent = `${t('totalLabel')}: €${total.toFixed(2)}`;
-            }
-        }
-
-        function loadDrinksFromStorage() {
-            const saved = localStorage.getItem(DRINKS_STORAGE_KEY);
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed)) {
-                        drinks = parsed;
-                    }
-                } catch (error) {
-                    console.warn('Failed to parse saved drinks from storage:', error);
-                }
-            }
-        }
-
-        function saveDrinksToStorage() {
-            try {
-                localStorage.setItem(DRINKS_STORAGE_KEY, JSON.stringify(drinks));
-            } catch (error) {
-                console.warn('Failed to save drinks to storage:', error);
-            }
-        }
-
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', function() {
-            loadLanguageFromStorage();
-            setStaticText();
-            updateLanguageButtonsActive();
-            loadDrinksFromStorage();
-            updateDrinksGrid();
-            updateManageDrinksList();
-        });
-
-        function updateDrinksGrid() {
-            const grid = document.getElementById('drinks-grid');
-            let gridHTML = '';
-            
-            if (drinks.length === 0) {
-                gridHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">🍹</div>
-                        <h3>${t('emptyNoDrinks')}</h3>
-                        <p>${t('emptyGoAdd')}</p>
-                    </div>
-                `;
-            } else {
-                drinks.forEach(drink => {
-                    gridHTML += `
-                        <div class="drink-item" onclick="addDrink('${drink.name}', ${drink.price})">
-                            <div class="drink-info">
-                                <div class="drink-icon">${drink.emoji}</div>
-                                <div class="drink-details">
-                                    <h3>${drink.name}</h3>
-                                    <p>${drink.description}</p>
-                                </div>
-                            </div>
-                            <div class="drink-price">€${drink.price.toFixed(2)}</div>
-                        </div>
-                    `;
-                });
-            }
-            
-            grid.innerHTML = gridHTML;
-        }
-
-        function updateManageDrinksList() {
-            const list = document.getElementById('manage-drinks-list');
-            let listHTML = '';
-            
-            if (drinks.length === 0) {
-                listHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">🍹</div>
-                        <h3>${t('emptyNoDrinks')}</h3>
-                        <p>${t('emptyManageAdd')}</p>
-                    </div>
-                `;
-            } else {
-                drinks.forEach((drink, index) => {
-                    listHTML += `
-                        <div class="manage-drink-item">
-                            <div class="drink-info">
-                                <div class="drink-icon">${drink.emoji}</div>
-                            </div>
-                            <div class="drink-manage-info">
-                                <h4>${drink.name}</h4>
-                                <p>${drink.description} - €${drink.price.toFixed(2)}</p>
-                            </div>
-                            <button class="delete-btn" onclick="deleteDrink(${index})">${t('delete')}</button>
-                        </div>
-                    `;
-                });
-            }
-            
-            list.innerHTML = listHTML;
-
-            const clearBtn = document.getElementById('clear-drinks-btn');
-            if (clearBtn) {
-                clearBtn.disabled = drinks.length === 0;
-            }
-        }
-
-        function addNewDrink() {
-            const name = document.getElementById('drink-name').value.trim();
-            const description = document.getElementById('drink-description').value.trim() || 'Delicious beverage';
-            const price = parseFloat(document.getElementById('drink-price').value);
-            const emoji = document.getElementById('drink-emoji').value.trim() || '🥤';
-            const messageDiv = document.getElementById('add-drink-message');
-            
-            // Validation
-            if (!name) {
-                showMessage(t('pleaseEnterName'), 'error');
-                return;
-            }
-            
-            if (isNaN(price) || price <= 0) {
-                showMessage(t('pleaseEnterValidPrice'), 'error');
-                return;
-            }
-            
-            if (price > 999.99) {
-                showMessage(t('priceTooHigh'), 'error');
-                return;
-            }
-            
-            // Check if drink already exists
-            if (drinks.some(drink => drink.name.toLowerCase() === name.toLowerCase())) {
-                showMessage(t('duplicateDrink'), 'error');
-                return;
-            }
-            
-            // Add the drink
-            drinks.push({ name, description, price, emoji });
-            saveDrinksToStorage();
-            
-            // Clear form
-            document.getElementById('drink-name').value = '';
-            document.getElementById('drink-description').value = '';
-            document.getElementById('drink-price').value = '';
-            document.getElementById('drink-emoji').value = '';
-            
-            // Update displays
-            updateDrinksGrid();
-            updateManageDrinksList();
-            
-            showMessage(t('addSuccess').replace('{name}', name), 'success');
-        }
-
-        function deleteDrink(index) {
-            const drinkName = drinks[index].name;
-            
-            if (confirm(t('confirmDelete').replace('{name}', drinkName))) {
-                drinks.splice(index, 1);
-                updateDrinksGrid();
-                updateManageDrinksList();
-                saveDrinksToStorage();
-                showMessage(t('deleteSuccess').replace('{name}', drinkName), 'success');
-            }
-        }
-
-        function clearAllDrinks() {
-            if (drinks.length === 0) return;
-            if (!confirm('Are you sure you want to clear all saved drinks?')) return;
-            drinks = [];
-            try {
-                localStorage.removeItem(DRINKS_STORAGE_KEY);
-            } catch (error) {
-                console.warn('Failed to clear drinks from storage:', error);
-            }
-            updateDrinksGrid();
-            updateManageDrinksList();
-            showMessage('All drinks cleared successfully!', 'success');
-        }
-
-        function showMessage(text, type) {
-            const messageDiv = document.getElementById('add-drink-message');
-            messageDiv.textContent = text;
-            messageDiv.className = `message ${type}`;
-            messageDiv.style.display = 'block';
-            
-            setTimeout(() => {
-                messageDiv.style.display = 'none';
-            }, 3000);
-        }
-
-        function switchTab(tabName) {
-            // Remove active class from all tabs and content
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            // Add active class to clicked tab and corresponding content
-            event.target.classList.add('active');
-            document.getElementById(tabName + '-tab').classList.add('active');
-        }
-
-        function addDrink(name, price) {
-            if (currentOrder[name]) {
-                currentOrder[name].quantity += 1;
-            } else {
-                currentOrder[name] = {
-                    price: price,
-                    quantity: 1
-                };
-            }
-            updateCurrentOrder();
-        }
-
-        function updateQuantity(name, change) {
-            if (currentOrder[name]) {
-                currentOrder[name].quantity += change;
-                if (currentOrder[name].quantity <= 0) {
-                    delete currentOrder[name];
-                }
-            }
-            updateCurrentOrder();
-        }
-
-        function updateCurrentOrder() {
-            const orderDiv = document.getElementById('current-order');
-            const itemsDiv = document.getElementById('order-items');
-            const totalDiv = document.getElementById('total');
-            
-            const items = Object.keys(currentOrder);
-            
-            if (items.length === 0) {
-                orderDiv.style.display = 'none';
-                return;
-            }
-            
-            orderDiv.style.display = 'block';
-            
-            let itemsHTML = '';
-            let total = 0;
-            
-            items.forEach(item => {
-                const itemData = currentOrder[item];
-                const itemTotal = itemData.price * itemData.quantity;
-                total += itemTotal;
-                
-                itemsHTML += `
-                    <div class="order-item">
-                        <div>
-                            <strong>${item}</strong><br>
-                            <small>€${itemData.price.toFixed(2)} ${t('each')}</small>
-                        </div>
-                        <div class="quantity-controls">
-                            <button class="qty-btn" onclick="updateQuantity('${item}', -1)">-</button>
-                            <span style="margin: 0 10px; font-weight: bold;">${itemData.quantity}</span>
-                            <button class="qty-btn plus" onclick="updateQuantity('${item}', 1)">+</button>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            itemsDiv.innerHTML = itemsHTML;
-            totalDiv.innerHTML = `${t('totalLabel')}: €${total.toFixed(2)}`;
-        }
-
-        function completeOrder() {
-            if (Object.keys(currentOrder).length === 0) return;
-            
-            const orderTotal = Object.keys(currentOrder).reduce((total, item) => {
-                return total + (currentOrder[item].price * currentOrder[item].quantity);
-            }, 0);
-            
-            const order = {
-                id: orderCounter++,
-                items: {...currentOrder},
-                total: orderTotal,
-                timestamp: new Date()
-            };
-            
-            orderHistory.unshift(order);
-            currentOrder = {};
-            updateCurrentOrder();
-            updateOrderHistory();
-            
-            // Show success feedback
-            const doneBtn = document.getElementById('done-btn');
-            const originalText = t('orderCompleteBtn') + ' ✅';
-            doneBtn.textContent = t('orderDelivered') + ' 🎉';
-            doneBtn.style.background = '#4CAF50';
-            
-            setTimeout(() => {
-                doneBtn.textContent = originalText;
-                doneBtn.style.background = 'linear-gradient(135deg, #FF6B6B, #FF8E53)';
-            }, 2000);
-        }
-
-        function updateOrderHistory() {
-            const historyDiv = document.getElementById('orders-history');
-            
-            if (orderHistory.length === 0) {
-                historyDiv.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📋</div>
-                        <h3>${t('historyEmptyTitle')}</h3>
-                        <p>${t('historyEmptyDesc')}</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            let historyHTML = '';
-            
-            orderHistory.forEach(order => {
-                const locale = getLocale();
-                const timeString = order.timestamp.toLocaleTimeString(locale, {hour: '2-digit', minute:'2-digit'});
-                const dateString = order.timestamp.toLocaleDateString(locale);
-                
-                let itemsHTML = '';
-                Object.keys(order.items).forEach(item => {
-                    const itemData = order.items[item];
-                    itemsHTML += `<div>${item} x${itemData.quantity} - €${(itemData.price * itemData.quantity).toFixed(2)}</div>`;
-                });
-                
-                historyHTML += `
-                    <div class="order-card">
-                        <div class="order-header">
-                            <div class="order-number">${t('orderLabel')} #${order.id}</div>
-                            <div class="order-time">${timeString} - ${dateString}</div>
-                        </div>
-                        <div class="order-items">
-                            ${itemsHTML}
-                        </div>
-                        <div class="order-total">${t('totalLabel')}: €${order.total.toFixed(2)}</div>
-                    </div>
-                `;
-            });
-            
-            historyDiv.innerHTML = historyHTML;
-        }
-
-        function getLocale() {
-            switch (currentLang) {
-                case 'nl': return 'nl-NL';
-                case 'fr': return 'fr-FR';
-                default: return 'en-US';
-            }
-        }
-    </script>
+        
 </body>
 </html>
