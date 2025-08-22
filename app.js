@@ -56,11 +56,20 @@ function setStaticText() {
 	const subEl = document.getElementById('header-subtitle');
 	if (subEl) subEl.textContent = t('subtitle');
 	const tabOrderBtn = document.getElementById('tab-order-btn');
-	if (tabOrderBtn) tabOrderBtn.textContent = t('tabOrder');
+	if (tabOrderBtn) {
+		const tabText = tabOrderBtn.querySelector('.tab-text');
+		if (tabText) tabText.textContent = t('tabOrder');
+	}
 	const tabManageBtn = document.getElementById('tab-manage-btn');
-	if (tabManageBtn) tabManageBtn.textContent = t('tabManage');
+	if (tabManageBtn) {
+		const tabText = tabManageBtn.querySelector('.tab-text');
+		if (tabText) tabText.textContent = t('tabManage');
+	}
 	const tabHistoryBtn = document.getElementById('tab-history-btn');
-	if (tabHistoryBtn) tabHistoryBtn.textContent = t('tabHistory');
+	if (tabHistoryBtn) {
+		const tabText = tabHistoryBtn.querySelector('.tab-text');
+		if (tabText) tabText.textContent = t('tabHistory');
+	}
 	const subtabDrinksBtn = document.getElementById('subtab-drinks-btn');
 	if (subtabDrinksBtn) subtabDrinksBtn.textContent = t('subtabDrinks');
 	const subtabFoodsBtn = document.getElementById('subtab-foods-btn');
@@ -216,44 +225,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	updateManageDrinksList();
 	updateManageFoodsList();
 	updateOrderHistory();
-	
-	// Add sticky tabs functionality
-	setupStickyTabs();
 });
 
-function setupStickyTabs() {
-	const tabs = document.querySelector('.tabs');
-	const header = document.querySelector('.header');
-	
-	if (!tabs || !header) return;
-	
-	const headerHeight = header.offsetHeight;
-	
-	function handleScroll() {
-		const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-		
-		if (scrollTop > headerHeight) {
-			tabs.style.position = 'fixed';
-			tabs.style.top = '0';
-			tabs.style.left = '50%';
-			tabs.style.transform = 'translateX(-50%)';
-			tabs.style.width = '400px';
-			tabs.style.zIndex = '1000';
-			tabs.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-		} else {
-			tabs.style.position = 'static';
-			tabs.style.top = 'auto';
-			tabs.style.left = 'auto';
-			tabs.style.transform = 'none';
-			tabs.style.width = '100%';
-			tabs.style.zIndex = 'auto';
-			tabs.style.boxShadow = 'none';
-		}
-	}
-	
-	window.addEventListener('scroll', handleScroll);
-	window.addEventListener('resize', handleScroll);
-}
+
 
 function updateDrinksGrid() {
 	const grid = document.getElementById('drinks-grid');
@@ -535,14 +509,30 @@ function showMessage(text, type, targetEl) {
 	}, 3000);
 }
 
+function toggleSidebar() {
+	const sidebar = document.getElementById('sidebar');
+	const overlay = document.getElementById('sidebar-overlay');
+	
+	if (sidebar.classList.contains('open')) {
+		sidebar.classList.remove('open');
+		overlay.classList.remove('open');
+	} else {
+		sidebar.classList.add('open');
+		overlay.classList.add('open');
+	}
+}
+
 function switchTab(tabName) {
 	// Remove active class from all tabs and content
-	document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+	document.querySelectorAll('.sidebar-tab').forEach(tab => tab.classList.remove('active'));
 	document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
 	
 	// Add active class to clicked tab and corresponding content
-	event.target.classList.add('active');
+	event.target.closest('.sidebar-tab').classList.add('active');
 	document.getElementById(tabName + '-tab').classList.add('active');
+	
+	// Close sidebar after selecting a tab
+	toggleSidebar();
 }
 
 function switchSubtab(name) {

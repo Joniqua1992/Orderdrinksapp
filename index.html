@@ -4,25 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drink Orders</title>
-    <link rel="stylesheet" href="styles.css?v=1.5">
+    <link rel="stylesheet" href="styles.css?v=1.6">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1 id="header-title">🍽️ Food & Drink Orders</h1>
-            <p id="header-subtitle">Tap to order your favorite drinks</p>
+            <div class="header-content">
+                <h1 id="header-title"> Food & Drink Orders</h1>
+                <p id="header-subtitle">Tap to order your favorite drinks</p>
+            </div>
             <div class="lang-switch">
+                <button id="hamburger-btn" class="hamburger-btn" onclick="toggleSidebar()">☰</button>
                 <button id="btn-lang-en" class="lang-btn" onclick="setLanguage('en')">EN</button>
                 <button id="btn-lang-nl" class="lang-btn" onclick="setLanguage('nl')">NL</button>
                 <button id="btn-lang-fr" class="lang-btn" onclick="setLanguage('fr')">FR</button>
             </div>
         </div>
 
-        <div class="tabs">
-            <button id="tab-order-btn" class="tab active" onclick="switchTab('order')">Order</button>
-            <button id="tab-manage-btn" class="tab" onclick="switchTab('manage')">Add Drinks and Food</button>
-            <button id="tab-history-btn" class="tab" onclick="switchTab('history')">History</button>
+        <div id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h3>Menu</h3>
+                <button class="close-sidebar-btn" onclick="toggleSidebar()">✕</button>
+            </div>
+            <div class="sidebar-tabs">
+                <button id="tab-order-btn" class="sidebar-tab active" onclick="switchTab('order')">
+                    <span class="tab-icon">🛒</span>
+                    <span class="tab-text">Order</span>
+                </button>
+                <button id="tab-manage-btn" class="sidebar-tab" onclick="switchTab('manage')">
+                    <span class="tab-icon">➕</span>
+                    <span class="tab-text">Add Drinks and Food</span>
+                </button>
+                <button id="tab-history-btn" class="sidebar-tab" onclick="switchTab('history')">
+                    <span class="tab-icon">📋</span>
+                    <span class="tab-text">History</span>
+                </button>
+            </div>
         </div>
+        
+        <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
         <div id="order-tab" class="tab-content active">
             <div class="subtabs">
