@@ -52,7 +52,7 @@ function updateLanguageButtonsActive() {
 
 function setStaticText() {
 	const titleEl = document.getElementById('header-title');
-	if (titleEl) titleEl.textContent = '🍽️ ' + t('title');
+	if (titleEl) titleEl.innerHTML = '<img src="logo.png" alt="ST BETON Logo" class="header-logo">';
 	const subEl = document.getElementById('header-subtitle');
 	if (subEl) subEl.textContent = t('subtitle');
 	const tabOrderBtn = document.getElementById('tab-order-btn');

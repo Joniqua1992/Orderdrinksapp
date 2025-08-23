@@ -1,6 +1,6 @@
 const translations = {
 	en: {
-		title: 'Food & Drink Orders',
+		title: 'STbeton bv',
 		subtitle: 'Tap to order your favorite food and drinks',
 		tabOrder: 'Order',
 		tabManage: 'Add Drinks and Food',
@@ -68,7 +68,7 @@ const translations = {
 		orderRemoved: 'Order removed successfully!'
 	},
 	nl: {
-		title: 'Eten & Drank Bestellingen',
+		title: 'STbeton bv',
 		subtitle: 'Tik om je favoriete eten en drankjes te bestellen',
 		tabOrder: 'Bestellen',
 		tabManage: 'Drankjes en Eten toevoegen',
@@ -136,7 +136,7 @@ const translations = {
 		orderRemoved: 'Bestelling succesvol verwijderd!'
 	},
 	fr: {
-		title: 'Commandes de nourriture et boissons',
+		title: 'STbeton bv',
 		subtitle: 'Appuyez pour commander vos plats et boissons préférés',
 		tabOrder: 'Commander',
 		tabManage: 'Ajouter des boissons et nourriture',
